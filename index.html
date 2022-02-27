@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</head>
+<body>
+<div class="d-flex container mt-5 flex-column">
+    <div class="d-flex flex-row">
+        <h1>Správa klientů</h1>
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Nový klient
+        </button>
+    </div>
+    <ul class="list-group" id="table"></ul>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body input-group gap-2">
+                <input class="form-control" id="firstName" placeholder="First name...">
+                <input class="form-control" id="lastName" placeholder="Last name...">
+                <input class="form-control" id="email" placeholder="Email...">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="newUser">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body input-group gap-2">
+                <input class="form-control" id="firstNameTwo" placeholder="First name...">
+                <input class="form-control" id="lastNameTwo" placeholder="Last name...">
+                <input class="form-control" id="emailTwo" placeholder="Email...">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeTwo" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editUser">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div id="modalBodyComment" class="modal-body ">
+                <input class="form-control" id="addComment" placeholder="Comment...">
+                <div id="comments" class="d-flex flex-column"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeThree" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="detail">Save changes</button>
+                <button type="button" class="btn btn-primary" id="add">Add Comment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
