@@ -10,9 +10,9 @@
 <body>
 <div class="d-flex container mt-5 flex-column">
     <div class="d-flex flex-row">
-        <h1>Správa klientů</h1>
+        <h1>Správa Studentů</h1>
         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Nový klient
+            Nový Student
         </button>
     </div>
     <ul class="list-group" id="table"></ul>
@@ -69,13 +69,37 @@
             </div>
 
             <div id="modalBodyComment" class="modal-body ">
-                <input class="form-control" id="addComment" placeholder="Comment...">
+                <input class="form-control" id="weight" placeholder="Weight...">
+                <input class="form-control" id="description" placeholder="Description...">
+                <input class="form-control" id="grade" placeholder="Grade...">
                 <div id="comments" class="d-flex flex-column"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="closeThree" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="detail">Save changes</button>
-                <button type="button" class="btn btn-primary" id="add">Add Comment</button>
+<!--                <button type="button" class="btn btn-primary" id="detail">Save changes</button>-->
+                <button type="button" class="btn btn-primary" id="add">Add Grade</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editGrade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="gradeLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div id="modalyBodyGrade" class="modal-body ">
+                <input class="form-control" id="weightInput" placeholder="Weight...">
+                <input class="form-control" id="descriptionInput" placeholder="Description...">
+                <input class="form-control" id="gradeInput" placeholder="Grade...">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeFour" data-bs-dismiss="modal">Close</button>
+                <!--                <button type="button" class="btn btn-primary" id="detail">Save changes</button>-->
+                <button type="button" class="btn btn-primary" id="edited">Update Grade</button>
             </div>
         </div>
     </div>

@@ -1,10 +1,15 @@
+let detailModal
+
 window.onload = () => {
-    fetch("http://167.172.175.168/78ed3834-66d7-4b50-a53f-b3db8b345afc/Clients")
+    detailModal = new bootstrap.Modal(document.getElementById("detailModal"))
+    let table = document.getElementById("table")
+    table.innerText = ""
+
+    fetch("http://159.223.27.219/78ed3834-66d7-4b50-a53f-b3db8b345afc/Students")
         .then(response => response.json())
         .then(data => {
             console.log(data)
             let editModal = new bootstrap.Modal(document.getElementById("modal"))
-            let detailModal = new bootstrap.Modal(document.getElementById("detailModal"))
             for (let i = 0; i < data.length; i++) {
                 let li = document.createElement("li")
                 let deleteButton = document.createElement("button")
@@ -33,6 +38,7 @@ window.onload = () => {
 
                 })
                 let detailButton = document.createElement("button")
+
                 detailButton.innerText = "Details"
                 detailButton.className = "btn btn-info"
                 detailButton.id = "detailModal"
@@ -42,8 +48,10 @@ window.onload = () => {
                 })
                 let commentButton = document.getElementById("add")
                 commentButton.addEventListener("click", () => {
-                    let commentInput = document.getElementById("addComment")
-                    addComment(commentInput.value, data[i].id)
+                    let weightInput = document.getElementById("weight")
+                    let descriptionInput = document.getElementById("description")
+                    let gradeInput = document.getElementById("grade")
+                    addComment(weightInput.value,descriptionInput.value,gradeInput.value, data[i].id)
                 })
                 li.innerHTML += `
                 <span>${data[i].firstName + " " + data[i].lastName}</span>
@@ -53,7 +61,7 @@ window.onload = () => {
                 li.appendChild(editButton)
                 li.appendChild(detailButton)
                 li.className = "list-group-item d-flex justify-content-between"
-                document.getElementById("table").appendChild(li)
+                table.appendChild(li)
             }
         })
     let buttonSave = document.getElementById("newUser")
@@ -64,7 +72,6 @@ window.onload = () => {
         post(firstName, lastName, email)
         let close = document.getElementById("close")
         close.click()
-
     })
 
 }
@@ -75,7 +82,7 @@ function post(firstName, lastName, email) {
         "lastName": lastName,
         "email": email
     }
-    fetch("http://167.172.175.168/78ed3834-66d7-4b50-a53f-b3db8b345afc/Clients", {
+    fetch("http://159.223.27.219/78ed3834-66d7-4b50-a53f-b3db8b345afc/Students", {
         method: "POST", headers: {
             "Content-Type": "application/json",
         },
@@ -92,7 +99,7 @@ function post(firstName, lastName, email) {
 
 
 function del(id) {
-    fetch("http://167.172.175.168/78ed3834-66d7-4b50-a53f-b3db8b345afc/Clients/" + id, {
+    fetch("http://159.223.27.219/78ed3834-66d7-4b50-a53f-b3db8b345afc/Students/" + id, {
         method: "DELETE", headers: {
             "Content-Type": "application/json",
         },
@@ -112,7 +119,7 @@ function edit(firstName, lastName, email, id) {
         "lastName": lastName,
         "email": email
     }
-    fetch("http://167.172.175.168/78ed3834-66d7-4b50-a53f-b3db8b345afc/Clients/" + id, {
+    fetch("http://159.223.27.219/78ed3834-66d7-4b50-a53f-b3db8b345afc/Students/" + id, {
         method: "PUT", headers: {
             "Content-Type": "application/json",
         },
@@ -128,18 +135,67 @@ function edit(firstName, lastName, email, id) {
 }
 
 function detail(id) {
-    fetch("http://167.172.175.168/78ed3834-66d7-4b50-a53f-b3db8b345afc/Clients/" + id + "/Comments", {
+    fetch("http://159.223.27.219/78ed3834-66d7-4b50-a53f-b3db8b345afc/Students/" + id, {
         method: "GET", headers: {
             "Content-Type": "application/json",
         },
     })
         .then(response => response.json())
         .then(data => {
+            data = data.grades
             console.log("Succes:", data)
             let modal = document.getElementById("comments")
+            modal.innerText=""
             for (let i = 0; i < data.length; i++) {
                 let span = document.createElement("span")
-                span.innerText += data[i].body
+                span.innerText += data[i].grade + ` (${data[i].weight}) - ${data[i].description}`
+
+                let del = document.createElement("span")
+                del.className = "text-danger m-1 btn"
+                del.innerText = "Smazat"
+                del.addEventListener("click", () => {
+                    fetch("http://159.223.27.219/78ed3834-66d7-4b50-a53f-b3db8b345afc/Students/" + id + "/Grades/"+data[i].id, {
+                        method: "DELETE"
+                    }).then(res => {
+                        detail(id)
+                    })
+                })
+
+                let edit = document.createElement("span")
+                edit.className = "text-info m-1 btn"
+                edit.innerText = "Upravit"
+
+                let weightInput = document.getElementById("weightInput")
+                let descriptionInput = document.getElementById("descriptionInput")
+                let gradeInput = document.getElementById("gradeInput")
+                let editedBtn = document.getElementById("edited")
+                let selected
+                edit.addEventListener("click", () => {
+                    let modalWindow = new bootstrap.Modal(document.getElementById("editGrade"))
+                    detailModal.hide()
+                    modalWindow.show()
+                    weightInput.value = data[i].weight
+                    gradeInput.value = data[i].grade
+                    descriptionInput.value = data[i].description
+                    selected = data[i].id
+                })
+
+                editedBtn.addEventListener("click", () => {
+                    fetch("http://159.223.27.219/78ed3834-66d7-4b50-a53f-b3db8b345afc/Students/" + id + "/Grades/"+selected, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            grade: gradeInput.value,
+                            description: descriptionInput.value,
+                            weight: weightInput.value
+                        })
+                    })
+                })
+
+                span.appendChild(del)
+                span.appendChild(edit)
                 console.log(data[i].body)
                 modal.appendChild(span)
             }
@@ -149,11 +205,13 @@ function detail(id) {
         })
 }
 
-function addComment(comment, id) {
+function addComment(weight, description, grade, id) {
     const data = {
-        "body" : comment
+        "weight": weight,
+        "description": description,
+        "grade": grade
     }
-    fetch("http://167.172.175.168/78ed3834-66d7-4b50-a53f-b3db8b345afc/Clients/" + id + "/Comments", {
+    fetch("http://159.223.27.219/78ed3834-66d7-4b50-a53f-b3db8b345afc/Students/" + id + "/Grades", {
         method: "POST", headers: {
             "Content-Type": "application/json",
         },
@@ -162,7 +220,6 @@ function addComment(comment, id) {
         .then(response => response.json())
         .then(data => {
             console.log("Succes:", data)
-
         })
         .catch((error) => {
             console.error("Error:", error)
